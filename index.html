@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Circular Tabs - Interactive jQuery Plugin</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="circular-tabs.js"></script>
+    <link href="circular-tabs.css" rel="stylesheet">
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        color: #24292e;
+        background: #f6f8fa;
+      }
+
+      header {
+        background: #24292e;
+        color: #fff;
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      header h1 {
+        font-size: 2.4em;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      header p {
+        font-size: 1.15em;
+        color: #959da5;
+        max-width: 560px;
+        margin: 0 auto;
+        line-height: 1.5;
+      }
+
+      header .badges {
+        margin-top: 16px;
+      }
+
+      header .badge {
+        display: inline-block;
+        background: #0366d6;
+        color: #fff;
+        font-size: 0.8em;
+        padding: 4px 10px;
+        border-radius: 12px;
+        margin: 0 4px;
+        text-decoration: none;
+      }
+
+      header .badge:hover {
+        background: #0250a3;
+      }
+
+      header .badge.secondary {
+        background: #586069;
+      }
+
+      .demo-section {
+        background: #fff;
+        padding: 40px 20px 60px;
+        text-align: center;
+        border-bottom: 1px solid #e1e4e8;
+      }
+
+      .demo-section h2 {
+        font-size: 1.5em;
+        margin-bottom: 8px;
+      }
+
+      .demo-section .hint {
+        color: #586069;
+        margin-bottom: 30px;
+        font-size: 0.95em;
+      }
+
+      .info-section {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      .info-section h2 {
+        font-size: 1.4em;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e1e4e8;
+      }
+
+      .info-section h2 + p {
+        margin-bottom: 20px;
+        line-height: 1.6;
+        color: #444d56;
+      }
+
+      pre {
+        background: #24292e;
+        color: #e1e4e8;
+        padding: 16px 20px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-size: 0.9em;
+        line-height: 1.5;
+        margin-bottom: 30px;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .feature {
+        background: #fff;
+        border: 1px solid #e1e4e8;
+        border-radius: 6px;
+        padding: 20px;
+      }
+
+      .feature h3 {
+        font-size: 1em;
+        margin-bottom: 6px;
+      }
+
+      .feature p {
+        color: #586069;
+        font-size: 0.9em;
+        line-height: 1.5;
+      }
+
+      footer {
+        text-align: center;
+        padding: 30px 20px;
+        color: #586069;
+        font-size: 0.85em;
+        border-top: 1px solid #e1e4e8;
+      }
+
+      footer a {
+        color: #0366d6;
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 600px) {
+        .features { grid-template-columns: 1fr; }
+        header h1 { font-size: 1.8em; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>circular-tabs</h1>
+      <p>A lightweight jQuery plugin that renders an interactive circular tab interface with drag-and-drop reordering.</p>
+      <div class="badges">
+        <a class="badge secondary" href="https://github.com/ddresch/circular-tabs">GitHub</a>
+        <span class="badge">jQuery</span>
+        <span class="badge secondary">MIT License</span>
+      </div>
+    </header>
+
+    <section class="demo-section">
+      <h2>Live Demo</h2>
+      <p class="hint">Click the "+" button to add tabs. Drag any tab to reorder.</p>
+      <div id="container">
+        <div id="circular-tabs">
+          <div id="marker" class="circular-tab" data-moveable="false" onclick="addTab()"><span>+</span></div>
+          <div id="innerCircle"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-section">
+      <h2>Features</h2>
+      <div class="features">
+        <div class="feature">
+          <h3>Radial Layout</h3>
+          <p>Tabs are arranged in a circle using CSS transforms with 15-degree spacing.</p>
+        </div>
+        <div class="feature">
+          <h3>Drag &amp; Drop</h3>
+          <p>Grab any tab and drag it around the circle. Tabs swap positions automatically.</p>
+        </div>
+        <div class="feature">
+          <h3>Snap to Position</h3>
+          <p>On release, tabs snap smoothly to their nearest slot with a CSS transition.</p>
+        </div>
+        <div class="feature">
+          <h3>Lightweight</h3>
+          <p>Only ~110 lines of JavaScript. No build tools, no frameworks beyond jQuery.</p>
+        </div>
+      </div>
+
+      <h2>Usage</h2>
+      <p>Include jQuery, the plugin script, and the stylesheet, then add the markup:</p>
+<pre>&lt;!-- Dependencies --&gt;
+&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="circular-tabs.js"&gt;&lt;/script&gt;
+&lt;link href="circular-tabs.css" rel="stylesheet"&gt;
+
+&lt;!-- Markup --&gt;
+&lt;div id="circular-tabs"&gt;
+  &lt;div id="marker" class="circular-tab"
+       data-moveable="false"
+       onclick="addTab()"&gt;
+    &lt;span&gt;+&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div id="innerCircle"&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+
+      <h2>API</h2>
+      <p>The plugin exposes global functions you can call directly:</p>
+<pre>// Add a new tab programmatically
+addTab();
+
+// Rotate a tab element to a specific CSS degree
+rotateTab($(element), 45);
+
+// Convert polar angle (atan2) to CSS degrees
+var cssDegs = convertThetaToCssDegs(theta);</pre>
+    </section>
+
+    <footer>
+      Created by <a href="https://github.com/ddresch">Dirk Dresch</a> &middot;
+      <a href="https://github.com/ddresch/circular-tabs">View on GitHub</a> &middot;
+      MIT License
+    </footer>
+  </body>
+</html>
