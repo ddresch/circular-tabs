@@ -1,7 +1,7 @@
 div#circular-tabs{margin: 0 auto; width:480px; height:480px; position:relative;}
-div#innerCircle{border: 4px solid black; z-index: 50; width: 380px; height: 380px; position: absolute; left: 50px; top: 50px; background-color: lightcoral; border-radius:190px; -moz-border-radius: 190px; -webkit-border-radius: 190px;}           
+div#innerCircle{border: 4px solid black; z-index: 50; width: 380px; height: 380px; position: absolute; left: 50px; top: 50px; background-color: lightcoral; border-radius:190px; -moz-border-radius: 190px; -webkit-border-radius: 190px; overflow: hidden;}
 div.circular-tab{
-  width: 40px; height:220px; background: black; position:absolute; 
+  width: 40px; height:220px; background: black; position:absolute;
   top: 20px; left:220px; cursor: pointer;
   color: white; padding: 0px; border-radius: 5px;
 
@@ -9,12 +9,12 @@ div.circular-tab{
   -moz-transform:rotate(0deg);
   -ms-transform:rotate(0deg);
   -webkit-transform:rotate(0deg);
-  
+
   transform-origin: 50% 100%;
   -moz-transform-origin:50% 100%;
   -ms-transform-origin:50% 100%;
   -webkit-transform-origin:50% 100%;
-  
+
   /* no text selection */
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -26,11 +26,15 @@ div.circular-tab{
 }
 
 div.circular-tab:hover {
-  background-color: grey; 
+  background-color: grey;
 }
 
 div.circular-tab.selected {
-  background-color: orange; 
+  background-color: orange;
+}
+
+div.circular-tab.active {
+  background-color: #e65100;
 }
 
 div.animate {
@@ -43,7 +47,48 @@ div.animate {
 div.circular-tab span {
   padding: 5px 0;
   display: block;
-  text-align: center; 
+  text-align: center;
   font-family: Helvetica;
   font-size: 16px;
+}
+
+#tabContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 260px;
+  text-align: center;
+  opacity: 0;
+  -webkit-transition: opacity 0.2s ease-in;
+  -moz-transition: opacity 0.2s ease-in;
+  -o-transition: opacity 0.2s ease-in;
+  transition: opacity 0.2s ease-in;
+}
+
+#tabContent.visible {
+  opacity: 1;
+}
+
+.tab-content-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.tab-content-title {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.tab-content-text {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #fff;
 }
