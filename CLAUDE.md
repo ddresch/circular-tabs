@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**circular-tabs** is a lightweight jQuery GUI plugin that renders an interactive circular tab interface. Users click a "+" button to add tabs (up to 23), which are arranged radially around a central circle. Tabs can be dragged to reorder them, with snapping behavior on release.
+**circular-tabs** is a lightweight jQuery GUI plugin that renders an interactive circular tab interface. Users click a "+" button to add tabs (up to 23), which are arranged radially around a central circle. Tabs can be dragged to reorder them, with snapping behavior on release. Clicking a tab displays its content inside the central circle.
 
 - **Author**: Dirk Dresch
 - **License**: MIT (2014)
@@ -12,9 +12,10 @@
 
 ```
 circular-tabs/
-├── circular-tabs.js    # Plugin logic (109 lines) — tab creation, drag/rotation, swap
-├── circular-tabs.css   # Styling — circular layout, hover/selected states, transitions
+├── circular-tabs.js    # Plugin logic — tab creation, drag/rotation, swap, content display
+├── circular-tabs.css   # Styling — circular layout, hover/active states, content area, transitions
 ├── circular-tabs.html  # Standalone demo page — loads jQuery from CDN + local files
+├── index.html          # GitHub Pages presentation page with live demo
 ├── README.md           # Minimal project description
 ├── LICENSE             # MIT license
 └── CLAUDE.md           # This file
@@ -40,6 +41,9 @@ Each tab is spaced 15 degrees apart (`(tabIndex + 1) * 15`).
 - **`tabs` array** — global array of tab objects: `{index, lbl, degree}`
 - **DOM data attributes** — each `.circular-tab` element stores `data-degree`, `data-index`, and optionally `data-moveable`
 - **`draggedTab`** — global reference to the currently dragged jQuery element
+- **`activeTab`** — global reference to the currently selected tab (content visible)
+- **`hasDragged`** — boolean flag to distinguish click (show content) from drag (reorder)
+- **`tabContents`** — array of 23 demo content objects: `{title, icon, text}`
 - **`maxTabNum`** — hard limit of 23 tabs
 
 ### Key Functions (circular-tabs.js)
@@ -48,6 +52,8 @@ Each tab is spaced 15 degrees apart (`(tabIndex + 1) * 15`).
 |---|---|
 | `addTab()` | Creates a new tab object, appends it to DOM, hides "+" marker at max |
 | `createTabView(newTab)` | Builds DOM element, applies rotation, binds mousedown/mousemove/mouseup |
+| `selectTab(tabDom)` | Shows content for clicked tab inside `#innerCircle`, adds `.active` class |
+| `getTabContent(tabIndex)` | Returns `{title, icon, text}` demo content for a tab index |
 | `rotateAnnotationCropper(offset, x, y, cropper)` | Main drag handler — computes angle from mouse position, triggers tab swap if needed |
 | `getTabIndexOfDegree(degree)` | Finds tab within ±4 degrees of a given angle (excluding dragged tab) |
 | `rotateTab(tab, cssDegs)` | Applies CSS rotation with vendor prefixes |
@@ -62,7 +68,9 @@ Each tab is spaced 15 degrees apart (`(tabIndex + 1) * 15`).
 | `.circular-tab` | Individual tab: 40x220px black bar, rotated from bottom-center |
 | `.circular-tab:hover` | Grey background on hover |
 | `.circular-tab.selected` | Orange background while dragging |
+| `.circular-tab.active` | Dark orange background for the currently selected tab |
 | `.animate` | 0.25s ease-in CSS transition (removed during drag, re-added on drop) |
+| `#tabContent` | Content area centered inside `#innerCircle` with fade-in transition |
 
 ### Interaction Flow
 
@@ -71,6 +79,7 @@ Each tab is spaced 15 degrees apart (`(tabIndex + 1) * 15`).
 3. On **mousedown**: tab becomes `.selected`, `.animate` removed, z-index raised
 4. On **mousemove**: `rotateAnnotationCropper()` calculates angle, swaps tabs if overlapping
 5. On **mouseup**: tab snaps to its `data-degree`, `.animate` restored, `.selected` removed
+6. If no drag occurred (click): `selectTab()` highlights the tab as `.active` and displays its content inside `#innerCircle` with a fade transition
 
 ## Development Conventions
 
