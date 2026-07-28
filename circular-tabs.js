@@ -129,7 +129,9 @@ function addTab(){
   if(tabs.length < maxTabNum){
     var tabIndex = tabs.length;
     tabs.push({index: tabIndex, lbl: tabIndex + 1, degree: (tabIndex + 1) * 15});
-    createTabView(tabs[tabs.length - 1]);
+    var newTab = tabs[tabs.length - 1];
+    createTabView(newTab);
+    selectTab($('.circular-tab[data-index="' + newTab.index + '"]'));
   }
 
   if(tabs.length == maxTabNum){
